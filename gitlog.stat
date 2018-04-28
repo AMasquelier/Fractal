@@ -1,0 +1,60 @@
+commit ebbe666c762a02eb775e7a1f6e989a4823303cc3
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Sat Apr 28 18:05:34 2018 +0200
+
+    Add files via upload
+
+ libfractal/Makefile     |  15 +++++++
+ libfractal/fractal.c    |  54 +++++++++++++++++++++++
+ libfractal/fractal.h    | 115 ++++++++++++++++++++++++++++++++++++++++++++++++
+ libfractal/fractal.o    | Bin 0 -> 5384 bytes
+ libfractal/libfractal.a | Bin 0 -> 14850 bytes
+ libfractal/tools.c      | 103 +++++++++++++++++++++++++++++++++++++++++++
+ libfractal/tools.o      | Bin 0 -> 9048 bytes
+ 7 files changed, 287 insertions(+)
+
+commit 3dbf35794401f1c1c11a10156688f53739be8403
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Sat Apr 28 18:05:05 2018 +0200
+
+    Create a
+
+ libfractal/a | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit ba80187d762ec4e6f0f79374e72bc1359b8712b1
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Sat Apr 28 18:04:21 2018 +0200
+
+    Delete libfractal
+
+ libfractal | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit ee74125cbc935cbce9f7b0a00e65ca82e7f352c6
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Sat Apr 28 18:03:49 2018 +0200
+
+    Create libfractal
+
+ libfractal | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 5cc751663ed8db08e2f817e6ca98834868131bb7
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Sat Apr 28 18:00:00 2018 +0200
+
+    Add files via upload
+
+ Makefile | 11 +++++++++++
+ main.c   | 10 ++++++++++
+ 2 files changed, 21 insertions(+)
+
+commit 729686f819c3cde291e31554021d3063535ec3f8
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Sat Apr 28 17:57:57 2018 +0200
+
+    Initial commit
+
+ .gitignore | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)

@@ -5,6 +5,6 @@
 
 int main()
 {
-    printf("Truc, machin et bidule bla bla bla");
+    printf("Truc, machin et biddsqsda");
     return 0;
 }

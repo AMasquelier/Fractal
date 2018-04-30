@@ -3,11 +3,29 @@
 #include <unistd.h>
 #include "fractal.h"
 
-int maxthreads = 4;
 
-int main(int argc, char *argv[])
+int maxthreads = 4;
+struct fractal **frac;
+struct fractal best_frac;
+int DoEach = 0;
+
+
+void fractal_compute(struct fractal *f) //Consommateur
 {
-	int DoEach = 0;
+		
+	
+	for(int i = 0; i < f->w; i++)
+	{
+		for(int j = 0; j < f->h; j++)
+		{
+			fractal_compute_value(f, i, j);
+		}
+	}
+}
+
+
+int main(int argc, char *argv[]) //Producteur
+{
 	for(int i = 0; i < argc; i++)
 	{
 		if(argv[i] == "-d") DoEach = 1;
@@ -16,14 +34,8 @@ int main(int argc, char *argv[])
 		
     struct fractal *f;
 	f = fractal_new("fractal", 1080, 1080, 0.285, 0.01);
-	printf("Truc\n");
-	for(int i = 0; i < f->w; i++)
-	{
-		for(int j = 0; j < f->h; j++)
-		{
-			fractal_compute_value(f, i, j);
-		}
-	}
+	
+	
 	if(write_bitmap_sdl(f, "Fractal.bmp") == 0) printf("Done !\n");
 	else printf("Error !\n");
 	

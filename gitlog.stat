@@ -1,3 +1,13 @@
+commit 535ee6ad26dc270e671bd26cf3f874413f68c22a
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Mon Apr 30 14:28:31 2018 +0200
+
+    Modif main
+
+ gitlog.stat | 19 +++++++++++++++++++
+ main.c      | 32 ++++++++++++++++++++++----------
+ 2 files changed, 41 insertions(+), 10 deletions(-)
+
 commit d78af21f0ded776987b138575c003a384b4fb56f
 Author: AMasquelier <antoine.masq@gmail.com>
 Date:   Mon Apr 30 12:58:59 2018 +0200

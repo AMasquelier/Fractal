@@ -6,6 +6,7 @@ struct fractal {
 	double a, b;
 	int *value;
 	char *name;
+	double average;
 };
 
 /*

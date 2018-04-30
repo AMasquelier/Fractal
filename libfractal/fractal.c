@@ -10,6 +10,7 @@ struct fractal *fractal_new(const char *name, int width, int height, double a, d
 	f->a = a;
 	f->b = b;
 	f->value = malloc(sizeof(int)*width*height);
+	average = 0;
     return f;
 }
 

@@ -4,7 +4,7 @@
 struct fractal {
 	int w, h;
 	double a, b;
-	int value;
+	int *value;
 	char *name;
 };
 

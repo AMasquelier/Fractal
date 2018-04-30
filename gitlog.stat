@@ -1,3 +1,30 @@
+commit 948612761d6217949f8f8a44d1d8da75f58b3e15
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Sat Apr 28 18:48:56 2018 +0200
+
+    Truc
+
+ main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 47120c6d7badd65a85f6f59d9e5c76c35cf63529
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Sat Apr 28 18:41:11 2018 +0200
+
+    truc
+
+ main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+commit 5c087f484152f4407917f0706cbecd4c381d4a26
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Sat Apr 28 18:38:32 2018 +0200
+
+    truc
+
+ gitlog.stat | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
 commit 652e94f504756714d359941f9d5b3e941cde1482
 Author: AMasquelier <antoine.masq@gmail.com>
 Date:   Sat Apr 28 18:35:36 2018 +0200

@@ -9,29 +9,36 @@ pthread_mutex_t mutex;
 int maxthreads = 4;
 struct fractal **frac;
 struct fractal best_frac;
-int *Lock;
+int *Status;
 int DoEach = 0;
 int Keep = 0;
 sem_t empty;
 sem_t full;
+enum { FREE, COMPUTING, ALLOCATED }
 
 
 
 void fractal_compute(void) //Consommateur
 {
 	struct fractal *f;
+	int nFrac = -1;
 	while(Keep == 1) //Doit savoir quand il n'aura plus rien à calculer
 	{
 		sem_wait(&full);
 		//Recherche d'une nouvelle fractale
 		for(int i = 0; i < maxthreads-1; i++)
 		{
-			if(Lock[i] == 0) 
+			if(Status[i] == ALLOCATED) 
 			{
 				f = frac[i];
+				nFrac = i;
 				break;
 			}
 		}
+		pthread_mutex_lock(&mutex);
+		Lock[nFrac] = COMPUTING;
+		pthread_mutex_unlock(&mutex);
+		
 		//Calcul de la fractale
 		double average = 0;
 		for(int i = 0; i < f->w; i++)
@@ -43,10 +50,12 @@ void fractal_compute(void) //Consommateur
 			}
 		}
 		f->average = average / (f->w * f->h);
+		
 		pthread_mutex_lock(&mutex);
 		
 		if(f->average > best_frac.average) best_frac = (*f);
 		fractal_free(f);		
+		Lock[nFrac] = FREE;
 				
 		pthread_mutex_unlock(&mutex);
 		sem_post(&empty);
@@ -62,7 +71,7 @@ int main(int argc, char *argv[]) //Producteur
 		if(argv[i] == "-d") DoEach = 1;
 		if(argv[i] == "--maxthreads" && i+1<argc) maxthreads = atoi(argv[i]);
 	}
-	frac = malloc(sizeof(struct fractal*)*(maxthreads-1));
+	frac = (struct fractal **)malloc(sizeof(struct fractal*)*(maxthreads-1));
 	Lock = (int*)malloc(sizeof(int)*(maxthreads-1));
 	sem_init(&empty, 0, maxthreads-1); 
 	sem_init(&full, 0, 0);

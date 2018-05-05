@@ -4,7 +4,7 @@
 struct fractal *fractal_new(const char *name, int width, int height, double a, double b)
 {
   	struct fractal *f = malloc(sizeof(struct fractal));
-	strcpy(f->name, name);
+	f->name= name;
 	f->w = width;
 	f->h = height;
 	f->a = a;

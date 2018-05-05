@@ -1,0 +1,5 @@
+fract1 800 800 -0.8 0.4
+fract2 1920 1080 1.0 -1.0
+fract3 2 2 0 0
+# ceci est un commentaire
+test 654 987 -0.56123 0.12345678

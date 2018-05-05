@@ -23,7 +23,15 @@ void fractal_compute(void) //Consommateur
 	while(Keep == 1) //Doit savoir quand il n'aura plus rien à calculer
 	{
 		sem_wait(&full);
-		
+		//Recherche d'une nouvelle fractale
+		for(int i = 0; i < maxthreads-1; i++)
+		{
+			if(Lock[i] == 0) 
+			{
+				f = frac[i];
+				break;
+			}
+		}
 		//Calcul de la fractale
 		double average = 0;
 		for(int i = 0; i < f->w; i++)
@@ -37,7 +45,7 @@ void fractal_compute(void) //Consommateur
 		f->average = average / (f->w * f->h);
 		pthread_mutex_lock(&mutex);
 		
-		if(f->average > best_frac.average) best_frac = *f;
+		if(f->average > best_frac.average) best_frac = (*f);
 		fractal_free(f);		
 				
 		pthread_mutex_unlock(&mutex);
@@ -54,7 +62,8 @@ int main(int argc, char *argv[]) //Producteur
 		if(argv[i] == "-d") DoEach = 1;
 		if(argv[i] == "--maxthreads" && i+1<argc) maxthreads = atoi(argv[i]);
 	}
-	Lock = malloc(sizeof(int)*(maxthreads-1));
+	frac = malloc(sizeof(struct fractal*)*(maxthreads-1));
+	Lock = (int*)malloc(sizeof(int)*(maxthreads-1));
 	sem_init(&empty, 0, maxthreads-1); 
 	sem_init(&full, 0, 0);
 	

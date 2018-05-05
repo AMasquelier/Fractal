@@ -4,13 +4,14 @@
 struct fractal *fractal_new(const char *name, int width, int height, double a, double b)
 {
   	struct fractal *f = malloc(sizeof(struct fractal));
-	f->name = name;
+	strcpy(f->name, name);
 	f->w = width;
 	f->h = height;
 	f->a = a;
 	f->b = b;
 	f->value = malloc(sizeof(int)*width*height);
-	average = 0;
+	
+	f->average = 0;
     return f;
 }
 

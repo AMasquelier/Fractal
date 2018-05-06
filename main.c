@@ -3,10 +3,11 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <string.h>
 #include "fractal.h"
 
 pthread_mutex_t mutex;
-int maxthreads = 2;
+int maxthreads = 4;
 pthread_t *threads;
 struct fractal **frac;
 struct fractal best_frac;
@@ -28,11 +29,11 @@ void *fractal_compute(void *args) //Consommateur
 	{
 		sem_wait(&full);
 		//Recherche d'une nouvelle fractale
+		if(Keep == 0) break;
 		
+		pthread_mutex_lock(&mutex);
 		for(int i = 0; i < maxthreads; i++)
 		{
-			
-			printf("fract %d\n", Status[nFrac]);
 			if(Status[i] == ALLOCATED) 
 			{
 				f = frac[i];
@@ -41,7 +42,6 @@ void *fractal_compute(void *args) //Consommateur
 				break;
 			}
 		}
-		pthread_mutex_lock(&mutex);
 		Status[nFrac] = COMPUTING;
 		pthread_mutex_unlock(&mutex);
 		
@@ -59,8 +59,10 @@ void *fractal_compute(void *args) //Consommateur
 		}
 		f->average = average / (f->w * f->h);
 		
-		char *buf = strcat(f->name,".bmp");
-		if(write_bitmap_sdl(&best_frac, buf) == 0) printf("Done !\n");
+		char buf[64];
+		strcpy(buf, f->name);
+		strcat(f->name,".bmp");
+		if(write_bitmap_sdl(frac[nFrac], buf) == 0) printf("Done !\n");
 		else 
 		{
 			perror("write_bitmap_sdl");
@@ -125,13 +127,14 @@ int main(int argc, char *argv[]) //Producteur
 	
 	//Production
 	char frac_name[64];
-	char *trash;
+	char trash;
 	int frac_w, frac_h;
 	float frac_a, frac_b;
 	FILE *actFile = NULL;
 	int inc_file = 0;
 	int nFrac = -1;
 	struct fractal *f;
+	char line[1024];
 	while(Keep == 1)
 	{
 		//Creation de la fractale
@@ -144,9 +147,11 @@ int main(int argc, char *argv[]) //Producteur
 			}
 		}
 			//Lecture des fichiers
+		FileRead:
+		
 		if(inc_file > nbfiles-1)
 		{
-			printf("%d\n", 2);
+			
 			if(readstdin == 0) Keep = 0;
 			else
 			{
@@ -165,19 +170,65 @@ int main(int argc, char *argv[]) //Producteur
 				return EXIT_FAILURE;
 			}
  			
-			inc_file++;
 		}
 		
-		if(actFile != NULL)
+		if(actFile != NULL && Keep == 1) 
 		{
-			if(fscanf(actFile, "%s %d %d %f %f\n", frac_name, &frac_w, &frac_h, &frac_a, &frac_b) >= 0)
+			
+			char *token;
+			Read:
+			fgets(line, 1024, actFile);
+			printf("Reading  %s\n", line);
+			token = strtok(line, " ");
+			printf("%s\n", token);
+			if(strcmp(token,"#") != 0)
 			{
+				char buf[64];
+				printf("token != # : %s\n", token);
+				strcpy(frac_name, token);
+				
+				token = strtok(NULL, " ");
+				if(token == NULL) goto CloseFile;	
+				strcpy(buf, token);
+				frac_w = strtol(buf, &buf[strlen(buf)], 10);
+			
+				token = strtok(NULL, " ");
+				if(token == NULL) goto CloseFile;
+				strcpy(buf, token);
+				frac_h = strtol(buf, &buf[strlen(buf)], 10);
+				
+				token = strtok(NULL, " ");
+				if(token == NULL) goto CloseFile;
+				strcpy(buf, token);
+				frac_a = strtod(buf, &buf[strlen(buf)]);
+				
+				token = strtok(NULL, " ");
+				if(token == NULL) goto CloseFile;
+				strcpy(buf, token);
+				frac_b = strtod(buf, &buf[strlen(buf)]);
+				if(frac_w == 0 || frac_h == 0) goto CloseFile;
 				printf("%s %d %d %f %f\n", frac_name, frac_w, frac_h, frac_a, frac_b);
 			}
-			else fclose(actFile);
+			else if(strcmp(token,"#") == 0)
+			{
+				printf("%s\n", line);
+				
+				goto Read;
+			}
+			else
+			{
+				CloseFile:
+				printf("Closing file\n");
+				inc_file++;
+				fclose(actFile);
+				
+				goto FileRead;
+			}
 			
 		}
-			printf("Waiting...\n");
+		if(Keep == 1)
+		{
+			printf(" Waiting...\n");
 			sem_wait(&empty);
 		
 			pthread_mutex_lock(&mutex);
@@ -186,10 +237,14 @@ int main(int argc, char *argv[]) //Producteur
 			
 			pthread_mutex_unlock(&mutex);
 			sem_post(&full);
+		}
+		
 	}
 	
-
+	printf("Fin\n");
 	
+	
+	for(int i = 0; i < maxthreads; i++) sem_post(&full); //Pour sortir les threads de calcul de leur attente
 	for(int i = 0; i < maxthreads; i++)
 	{
 		if (pthread_join(threads[i], NULL)) 

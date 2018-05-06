@@ -1,10 +1,16 @@
 #include <stdlib.h>
+#include <string.h>
 #include "fractal.h"
 
 struct fractal *fractal_new(const char *name, int width, int height, double a, double b)
 {
   	struct fractal *f = malloc(sizeof(struct fractal));
-	f->name= name;
+  
+  	for(int i = 0; i < 64; i++)
+  	{
+  		f->name[i] = name[i];
+  		if(name[i] == '\0') break;
+  	}
 	f->w = width;
 	f->h = height;
 	f->a = a;

@@ -5,7 +5,7 @@ struct fractal {
 	int w, h;
 	double a, b;
 	int *value;
-	char *name;
+	char name[64];
 	double average;
 };
 
@@ -23,7 +23,7 @@ struct fractal *fractal_new(const char *name, int width, int height, double a, d
 
 /*
  * fractal_free: libère la mémoire utilisée par une struct fractal
- *
+
  * @f: fractale à libérer
  */
 void fractal_free(struct fractal *f);

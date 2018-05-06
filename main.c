@@ -23,7 +23,7 @@ enum { FREE, COMPUTING, ALLOCATED };
 void *fractal_compute(void *args) //Consommateur
 {
 	struct fractal *f;
-	printf("FractCompute\n");
+	printf("   New thread\n");
 	int nFrac = -1;
 	while(Keep == 1) //Doit savoir quand il n'aura plus rien à calculer
 	{
@@ -38,14 +38,13 @@ void *fractal_compute(void *args) //Consommateur
 			{
 				f = frac[i];
 				nFrac = i;
-				printf("Frac n° %s\n", f->name);
 				break;
 			}
 		}
 		Status[nFrac] = COMPUTING;
 		pthread_mutex_unlock(&mutex);
 		
-		printf("\n Computing...\n");
+		printf("   Computing %s...\n", f->name);
 		
 		//Calcul de la fractale
 		double average = 0;
@@ -62,11 +61,11 @@ void *fractal_compute(void *args) //Consommateur
 		char buf[64];
 		strcpy(buf, f->name);
 		strcat(f->name,".bmp");
-		if(write_bitmap_sdl(frac[nFrac], buf) == 0) printf("Done !\n");
-		else 
+		if(DoEach == 1 && write_bitmap_sdl(frac[nFrac], buf) == 0) printf("   %s done !\n", buf);
+		else if(DoEach == 1)
 		{
 			perror("write_bitmap_sdl");
-			printf("Problem with write_bitmap_sdl\n");
+			printf(" Problem with write_bitmap_sdl\n");
 			return EXIT_FAILURE;
 		}
 		
@@ -80,7 +79,7 @@ void *fractal_compute(void *args) //Consommateur
 		pthread_mutex_unlock(&mutex);
 		sem_post(&empty);
 	}
-	printf("Quit fract\n");
+	printf("   Closing thread\n");
 }
 
 
@@ -98,9 +97,9 @@ int main(int argc, char *argv[]) //Producteur
 	for(int i = 1; i < argc-1; i++)
 	{
 		if(strcmp(argv[i],"-d") == 0) DoEach = 1;
-		else if(strcmp(argv[i],"--maxthreads") == 0 && i+1<argc) maxthreads = atoi(argv[i+1]);
+		else if(strcmp(argv[i],"--maxthreads") == 0 && i+1<argc) {maxthreads = atoi(argv[i+1]); i++; }
 		else if(strcmp(argv[i],"-") == 0) readstdin = 1;
-		else { filename[nbfiles] = argv[i]; nbfiles++; printf("%s\n", argv[i]);}
+		else { filename[nbfiles] = argv[i]; nbfiles++;}
 	}
 	filenameOut = argv[argc-1];
 	printf("\n");
@@ -161,7 +160,7 @@ int main(int argc, char *argv[]) //Producteur
 		}
 		else if(actFile == NULL)
 		{
-			printf("%d / %d \n", inc_file, nbfiles);
+			printf("File %d / %d \n", inc_file+1, nbfiles);
 			actFile = fopen(filename[inc_file],"r");
 			if(actFile == NULL)
 			{
@@ -178,13 +177,10 @@ int main(int argc, char *argv[]) //Producteur
 			char *token;
 			Read:
 			fgets(line, 1024, actFile);
-			printf("Reading  %s\n", line);
 			token = strtok(line, " ");
-			printf("%s\n", token);
 			if(strcmp(token,"#") != 0)
 			{
 				char buf[64];
-				printf("token != # : %s\n", token);
 				strcpy(frac_name, token);
 				
 				token = strtok(NULL, " ");
@@ -207,12 +203,9 @@ int main(int argc, char *argv[]) //Producteur
 				strcpy(buf, token);
 				frac_b = strtod(buf, &buf[strlen(buf)]);
 				if(frac_w == 0 || frac_h == 0) goto CloseFile;
-				printf("%s %d %d %f %f\n", frac_name, frac_w, frac_h, frac_a, frac_b);
 			}
 			else if(strcmp(token,"#") == 0)
-			{
-				printf("%s\n", line);
-				
+			{				
 				goto Read;
 			}
 			else
@@ -221,7 +214,7 @@ int main(int argc, char *argv[]) //Producteur
 				printf("Closing file\n");
 				inc_file++;
 				fclose(actFile);
-				
+				actFile = NULL;
 				goto FileRead;
 			}
 			
@@ -241,7 +234,7 @@ int main(int argc, char *argv[]) //Producteur
 		
 	}
 	
-	printf("Fin\n");
+	printf("Waiting for threads...\n");
 	
 	
 	for(int i = 0; i < maxthreads; i++) sem_post(&full); //Pour sortir les threads de calcul de leur attente
@@ -255,7 +248,7 @@ int main(int argc, char *argv[]) //Producteur
 		}
 	}
 	
-	if(write_bitmap_sdl(&best_frac, strcat(filenameOut,".bmp")) == 0) printf("Done !\n");
+	if(write_bitmap_sdl(&best_frac, filenameOut) == 0) printf("%s done !\n", filenameOut);
 	else 
 	{
 		perror("write_bitmap_sdl");

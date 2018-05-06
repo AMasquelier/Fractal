@@ -1,3 +1,100 @@
+commit cf68b588e069d32e0520ab5cf2a569c0192346e7
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Sun May 6 13:00:33 2018 +0200
+
+    Modif main
+
+ Bitmap.bmp.bmp          | Bin 1920054 -> 1920054 bytes
+ Fractal.bmp             | Bin 54 -> 0 bytes
+ Fractales               |   4 +--
+ fract1                  | Bin 0 -> 1920054 bytes
+ fract2                  | Bin 0 -> 6220854 bytes
+ fract2.bmp              | Bin 54 -> 0 bytes
+ fract2.bmp.bmp          | Bin 1920054 -> 0 bytes
+ fract3                  | Bin 0 -> 70 bytes
+ libfractal/fractal.c    |   8 ++++-
+ libfractal/fractal.h    |   4 +--
+ libfractal/fractal.o    | Bin 6128 -> 6536 bytes
+ libfractal/libfractal.a | Bin 15762 -> 16202 bytes
+ libfractal/tools.o      | Bin 9216 -> 9248 bytes
+ main                    | Bin 23648 -> 24088 bytes
+ main.c                  |  83 ++++++++++++++++++++++++++++++++++++++++--------
+ test                    | Bin 0 -> 1938522 bytes
+ 16 files changed, 80 insertions(+), 19 deletions(-)
+
+commit 2618e13bc80f2f6b3d14d347af66d81f16da1b60
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Sat May 5 23:57:55 2018 +0200
+
+    Modif main
+
+ libfractal/fractal.c    |   2 +-
+ libfractal/fractal.o    | Bin 6280 -> 6128 bytes
+ libfractal/libfractal.a | Bin 15914 -> 15762 bytes
+ main                    | Bin 23768 -> 23648 bytes
+ 4 files changed, 1 insertion(+), 1 deletion(-)
+
+commit 606447bf1ba857add160eb2d7f2c6ed95e56f33b
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Sat May 5 23:55:11 2018 +0200
+
+    Modif main
+
+ Bitmap.bmp.bmp          | Bin 0 -> 1920054 bytes
+ fract2.bmp              | Bin 0 -> 54 bytes
+ fract2.bmp.bmp          | Bin 0 -> 1920054 bytes
+ libfractal/fractal.c    |   5 ++-
+ libfractal/fractal.o    | Bin 6064 -> 6280 bytes
+ libfractal/libfractal.a | Bin 15658 -> 15914 bytes
+ libfractal/tools.o      | Bin 9176 -> 9216 bytes
+ main                    | Bin 19200 -> 23768 bytes
+ main.c                  | 100 +++++++++++++++++++++++++++++++++---------------
+ 9 files changed, 73 insertions(+), 32 deletions(-)
+
+commit a17c120a83f2c75ec89b243e8171b6e94cba5246
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Sat May 5 20:10:40 2018 +0200
+
+    Modif main
+
+ Fractales |   5 +++
+ main      | Bin 18952 -> 19200 bytes
+ main.c    | 106 +++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 3 files changed, 99 insertions(+), 12 deletions(-)
+
+commit 0fe313788ddfd6cf5eef32fad9dacf96199aa07f
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Sat May 5 18:00:28 2018 +0200
+
+    Update main.c
+
+ main.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+commit 42b3df2eb3c8a4de3a81f5d954597ba276971166
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Sat May 5 16:41:31 2018 +0200
+
+    Update main.c
+
+ main.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+commit 7def5315885a5a4048c6377c9ea511ade20d3243
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Mon Apr 30 15:47:09 2018 +0200
+
+    Modif main
+
+ Fractal.bmp          | Bin 3499254 -> 54 bytes
+ Makefile             |   2 +-
+ gitlog.stat          |  10 ++++++++++
+ libfractal/fractal.c |   1 +
+ libfractal/fractal.h |   1 +
+ main                 | Bin 18384 -> 18952 bytes
+ main.c               |  51 +++++++++++++++++++++++++++++++++++++++++----------
+ 7 files changed, 54 insertions(+), 11 deletions(-)
+
 commit 535ee6ad26dc270e671bd26cf3f874413f68c22a
 Author: AMasquelier <antoine.masq@gmail.com>
 Date:   Mon Apr 30 14:28:31 2018 +0200

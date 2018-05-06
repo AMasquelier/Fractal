@@ -256,7 +256,5 @@ int main(int argc, char *argv[]) //Producteur
 		return EXIT_FAILURE;
 	}
 	
-	
-	
     return 0;
 }

@@ -1,3 +1,22 @@
+commit 0e0e50c8ef373d873e76f89088c2bb9bbf23d63d
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Sun May 6 13:36:03 2018 +0200
+
+    Modif main
+
+ Bitmap.bmp     | Bin 0 -> 1920054 bytes
+ Bitmap.bmp.bmp | Bin 1920054 -> 0 bytes
+ Fractales      |   3 ++
+ Fractales2     |   1 +
+ fract12        | Bin 0 -> 1920054 bytes
+ fract4         | Bin 0 -> 1920054 bytes
+ fract5         | Bin 0 -> 1920054 bytes
+ fract6         | Bin 0 -> 1920054 bytes
+ gitlog.stat    |  97 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ main           | Bin 24088 -> 24088 bytes
+ main.c         |  33 ++++++++------------
+ 11 files changed, 114 insertions(+), 20 deletions(-)
+
 commit cf68b588e069d32e0520ab5cf2a569c0192346e7
 Author: AMasquelier <antoine.masq@gmail.com>
 Date:   Sun May 6 13:00:33 2018 +0200

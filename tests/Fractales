@@ -1,0 +1,5 @@
+# Est-ce que ce commentaire est détecté ?
+fract1 800 800 0.285 0
+fract2 -800 800 0.285 0
+# Cette partie du fichier ne sera pas lue :(
+fract3 100 800 0.285 0

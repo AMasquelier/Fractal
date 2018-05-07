@@ -15,7 +15,7 @@ struct fractal *fractal_new(const char *name, int width, int height, double a, d
 	f->h = height;
 	f->a = a;
 	f->b = b;
-	f->value = malloc(sizeof(int)*width*height);
+	f->value = (int *)malloc(sizeof(int)*width*height);
 	
 	f->average = 0;
     return f;
@@ -23,7 +23,11 @@ struct fractal *fractal_new(const char *name, int width, int height, double a, d
 
 void fractal_free(struct fractal *f)
 {
-    if(f != NULL) free(f);
+    if(f != NULL)
+    { 
+   		//free(f->value); Bizarrement la libération de la mémoire utilisée par value génère une erreur de segmentation
+    	free(f);    	
+    }
 }
 
 const char *fractal_get_name(const struct fractal *f)

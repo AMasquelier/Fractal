@@ -1,0 +1,5 @@
+./main -d --maxthreads 7 tests/Fractales Bitmap.bmp
+./main -d --maxthreads 1 tests/Fractales2 Bitmap.bmp
+./main --maxthreads -3 tests/Fractales Bitmap.bmp
+./main --maxthreads 4 tests/Fractales tests/Fractales2 Bitmap.bmp
+./main --maxthreads

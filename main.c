@@ -7,7 +7,7 @@
 #include "fractal.h"
 
 pthread_mutex_t mutex;
-int maxthreads = 4;
+int maxthreads = 1;
 pthread_t *threads;
 struct fractal **frac;
 struct fractal best_frac;
@@ -66,7 +66,6 @@ void *fractal_compute(void *args) //Consommateur
 		{
 			perror("write_bitmap_sdl");
 			printf(" Problem with write_bitmap_sdl\n");
-			return EXIT_FAILURE;
 		}
 		
 		
@@ -109,8 +108,9 @@ int main(int argc, char *argv[]) //Producteur
 	Status = (int*)calloc(maxthreads, sizeof(int));
 	if(threads == NULL || frac == NULL || Status == NULL)
 	{
+		printf("Probleme d'allocation\n");
 		perror("malloc");
-		return EXIT_FAILURE;
+		return -1;
 	}
 	sem_init(&empty, 0, maxthreads); 
 	sem_init(&full, 0, 0);
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) //Producteur
 		{
 			perror("pthread_create");
 			printf("Problem with pthread_create\n");
-			return EXIT_FAILURE;
+			return -1;
 		}
 	}
 	
@@ -150,7 +150,6 @@ int main(int argc, char *argv[]) //Producteur
 		
 		if(inc_file > nbfiles-1)
 		{
-			
 			if(readstdin == 0) Keep = 0;
 			else
 			{
@@ -166,7 +165,7 @@ int main(int argc, char *argv[]) //Producteur
 			{
 				perror("fopen");
 				printf("Problem with fopen %s\n", filename[inc_file]);
-				return EXIT_FAILURE;
+				return -1;
 			}
  			
 		}
@@ -184,25 +183,30 @@ int main(int argc, char *argv[]) //Producteur
 				strcpy(frac_name, token);
 				
 				token = strtok(NULL, " ");
-				if(token == NULL) goto CloseFile;	
+				if(token == NULL) { printf("Missing value\n"); goto CloseFile;}	
 				strcpy(buf, token);
 				frac_w = strtol(buf, &buf[strlen(buf)], 10);
 			
 				token = strtok(NULL, " ");
-				if(token == NULL) goto CloseFile;
+				if(token == NULL) { printf("Missing value\n"); goto CloseFile;}
 				strcpy(buf, token);
 				frac_h = strtol(buf, &buf[strlen(buf)], 10);
 				
 				token = strtok(NULL, " ");
-				if(token == NULL) goto CloseFile;
+				if(token == NULL) { printf("Missing value\n"); goto CloseFile;}
 				strcpy(buf, token);
 				frac_a = strtod(buf, &buf[strlen(buf)]);
 				
 				token = strtok(NULL, " ");
-				if(token == NULL) goto CloseFile;
+				if(token == NULL) { printf("Missing value\n"); goto CloseFile;}
 				strcpy(buf, token);
 				frac_b = strtod(buf, &buf[strlen(buf)]);
-				if(frac_w == 0 || frac_h == 0) goto CloseFile;
+				if(frac_w <= 0 || frac_h <= 0 || frac_a < -1 || frac_a > 1 || frac_b < -1 || frac_b > 1) 
+				{
+					printf("Format non-conforme !\n");
+					
+					goto CloseFile;
+				}
 			}
 			else if(strcmp(token,"#") == 0)
 			{				
@@ -233,7 +237,7 @@ int main(int argc, char *argv[]) //Producteur
 		}
 		
 	}
-	
+	End:
 	printf("Waiting for threads...\n");
 	
 	
@@ -244,7 +248,7 @@ int main(int argc, char *argv[]) //Producteur
 		{
 			perror("pthread_join");
 			printf("Problem with pthread_join\n");
-			return EXIT_FAILURE;
+			return -1;
 		}
 	}
 	
@@ -253,8 +257,12 @@ int main(int argc, char *argv[]) //Producteur
 	{
 		perror("write_bitmap_sdl");
 		printf("Problem with write_bitmap_sdl\n");
-		return EXIT_FAILURE;
+		return -1;
 	}
+	
+	free(threads);
+	free(frac);
+	free(filename);
 	
     return 0;
 }

@@ -100,6 +100,11 @@ int main(int argc, char *argv[]) //Producteur
 		else if(strcmp(argv[i],"-") == 0) readstdin = 1;
 		else { filename[nbfiles] = argv[i]; nbfiles++;}
 	}
+	if(maxthreads < 1)
+	{
+		printf("Invalid number of threads!\n Set on default number of threads\n");
+		maxthreads = 1;
+	}
 	filenameOut = argv[argc-1];
 	printf("\n");
 	//Allocations et initialisations
@@ -108,7 +113,7 @@ int main(int argc, char *argv[]) //Producteur
 	Status = (int*)calloc(maxthreads, sizeof(int));
 	if(threads == NULL || frac == NULL || Status == NULL)
 	{
-		printf("Probleme d'allocation\n");
+		printf("Allocation problem\n");
 		perror("malloc");
 		return -1;
 	}

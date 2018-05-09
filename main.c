@@ -185,27 +185,28 @@ int main(int argc, char *argv[]) //Producteur
 			if(strcmp(token,"#") != 0)
 			{
 				char buf[64];
+				char *endptr;
 				strcpy(frac_name, token);
 				
 				token = strtok(NULL, " ");
 				if(token == NULL) { printf("Missing value\n"); goto CloseFile;}	
 				strcpy(buf, token);
-				frac_w = strtol(buf, &buf[strlen(buf)], 10);
+				frac_w = strtol(buf, &endptr, 10);
 			
 				token = strtok(NULL, " ");
 				if(token == NULL) { printf("Missing value\n"); goto CloseFile;}
 				strcpy(buf, token);
-				frac_h = strtol(buf, &buf[strlen(buf)], 10);
+				frac_h = strtol(buf, &endptr, 10);
 				
 				token = strtok(NULL, " ");
 				if(token == NULL) { printf("Missing value\n"); goto CloseFile;}
 				strcpy(buf, token);
-				frac_a = strtod(buf, &buf[strlen(buf)]);
+				frac_a = strtod(buf, &endptr);
 				
 				token = strtok(NULL, " ");
 				if(token == NULL) { printf("Missing value\n"); goto CloseFile;}
 				strcpy(buf, token);
-				frac_b = strtod(buf, &buf[strlen(buf)]);
+				frac_b = strtod(buf, &endptr);
 				if(frac_w <= 0 || frac_h <= 0 || frac_a < -1 || frac_a > 1 || frac_b < -1 || frac_b > 1) 
 				{
 					printf("Format non-conforme !\n");

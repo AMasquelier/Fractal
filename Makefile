@@ -7,5 +7,5 @@ lib:
 	cd libfractal && $(MAKE)
 
 clean:
-	rm Fractal
-	cd libfractal
+	rm main
+	rm libfractal/fractal.o libfractal/tools.o libfractal/libfractal.a

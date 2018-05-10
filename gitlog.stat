@@ -1,3 +1,46 @@
+commit bcb1a6d8c2f9013a131507dd0e25d385f8434725
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Wed May 9 10:54:46 2018 +0200
+
+    Update main.c
+
+ main.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+commit 25680ca2222a70d6aff5a98a738b25dae31f76ed
+Author: AMasquelier <38529011+AMasquelier@users.noreply.github.com>
+Date:   Mon May 7 19:00:27 2018 +0200
+
+    Update main.c
+
+ main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit 4c5855225a40b9a4b0d5f6c1abfe65c76c7bbc99
+Author: AMasquelier <antoine.masq@gmail.com>
+Date:   Mon May 7 17:41:53 2018 +0200
+
+    Modif main
+
+ Bitmap.bmp              | Bin 1920054 -> 1920054 bytes
+ Fractales               |   6 +++---
+ fract1                  | Bin 1920054 -> 1920054 bytes
+ fract10                 | Bin 1920054 -> 1920054 bytes
+ fract11                 | Bin 1920054 -> 1920054 bytes
+ fract7                  | Bin 1920054 -> 1920054 bytes
+ gitlog.stat             |  18 ++++++++++++++++++
+ libfractal/fractal.c    |   8 ++++++--
+ libfractal/fractal.o    | Bin 6536 -> 6288 bytes
+ libfractal/libfractal.a | Bin 16202 -> 15954 bytes
+ main                    | Bin 24144 -> 24000 bytes
+ main.c                  |  36 ++++++++++++++++++++++--------------
+ test                    | Bin 1938522 -> 0 bytes
+ tests/Commandes test    |   5 +++++
+ tests/Fractales         |   5 +++++
+ tests/Fractales2        |   1 +
+ tests/Fractales3        |   1 +
+ 17 files changed, 61 insertions(+), 19 deletions(-)
+
 commit ee0043dab434f70255dac34fbad59bd0916d4cbd
 Author: AMasquelier <antoine.masq@gmail.com>
 Date:   Sun May 6 14:12:38 2018 +0200

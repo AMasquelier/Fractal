@@ -60,12 +60,12 @@ void *fractal_compute(void *args) //Consommateur
 		
 		char buf[64];
 		strcpy(buf, f->name);
-		strcat(f->name,".bmp");
+		strcat(buf,".bmp");
 		if(DoEach == 1 && write_bitmap_sdl(frac[nFrac], buf) == 0) printf("   %s done !\n", buf);
 		else if(DoEach == 1)
 		{
 			perror("write_bitmap_sdl");
-			printf(" Problem with write_bitmap_sdl\n");
+			printf("Problem with write_bitmap_sdl\n");
 		}
 		
 		
@@ -102,10 +102,16 @@ int main(int argc, char *argv[]) //Producteur
 	}
 	if(maxthreads < 1)
 	{
-		printf("Invalid number of threads!\n Set on default number of threads\n");
+		printf("Invalid number of threads! ->  Set on default number of threads : 1\n");
 		maxthreads = 1;
 	}
-	filenameOut = argv[argc-1];
+	if(nbfiles + readstdin > 0) filenameOut = argv[argc-1];
+	else
+	{
+		printf("Out file name not found -> Set on Bitmap.bmp");
+		filename[nbfiles] = argv[argc-1]; nbfiles++;
+		filenameOut = "Bitmap.bmp";
+	}
 	printf("\n");
 	//Allocations et initialisations
 	threads = (pthread_t*)malloc(sizeof(pthread_t)*maxthreads);
@@ -158,8 +164,32 @@ int main(int argc, char *argv[]) //Producteur
 			if(readstdin == 0) Keep = 0;
 			else
 			{
+				char c;
 				//Lecture de l'entrée standard
-				readstdin = 0;
+				Readstdin:
+				printf("Type + to make a fractal and - to quit\n");
+				while(scanf("%c", &c) != 1);
+				
+				if(c == '+')
+				{
+					printf("Enter a fractal with the format :\n   <name> <w> <h> <a> <b>\n");
+				
+					if(scanf("%s %d %d %f %f", frac_name, &frac_w, &frac_h, &frac_a, &frac_b)==5)
+					{
+						if(frac_w <= 0 || frac_h <= 0 || frac_a < -1 || frac_a > 1 || frac_b < -1 || frac_b > 1) 
+						{
+							printf("Bad format !\n");
+						}
+					}
+					// Vide le buffer de l'entrée standard
+					int gc = 0;
+					while (gc != '\n' && gc != EOF)
+					{
+						gc = getchar();
+					}
+				}
+				else if (c == '-') readstdin = 0;
+				else goto Readstdin;
 			}
 		}
 		else if(actFile == NULL)
@@ -209,7 +239,7 @@ int main(int argc, char *argv[]) //Producteur
 				frac_b = strtod(buf, &endptr);
 				if(frac_w <= 0 || frac_h <= 0 || frac_a < -1 || frac_a > 1 || frac_b < -1 || frac_b > 1) 
 				{
-					printf("Format non-conforme !\n");
+					printf("Bad format !, %s\n", frac_name);
 					
 					goto CloseFile;
 				}
@@ -258,14 +288,20 @@ int main(int argc, char *argv[]) //Producteur
 		}
 	}
 	
-	if(write_bitmap_sdl(&best_frac, filenameOut) == 0) printf("%s done !\n", filenameOut);
-	else 
+	if(best_frac.w != 0 && best_frac.h != 0)
 	{
-		perror("write_bitmap_sdl");
-		printf("Problem with write_bitmap_sdl\n");
-		return -1;
+		if(write_bitmap_sdl(&best_frac, filenameOut) == 0) printf("%s done !\n", filenameOut);
+		else 
+		{
+			perror("write_bitmap_sdl");
+			printf("Problem with write_bitmap_sdl\n");
+			return -1;
+		}
 	}
-	
+	else
+	{
+		printf("No fractal to save !\n");
+	}
 	free(threads);
 	free(frac);
 	free(filename);
